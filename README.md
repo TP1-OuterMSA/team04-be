@@ -1,3 +1,2 @@
 # _be-template
-
-team04-be 저장소
+수정사항 반영
