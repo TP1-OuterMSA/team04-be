@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jsoup.nodes.Element;
-import webscraper.meal.model.MenuItem;
 
 @Entity
 @Builder
@@ -37,15 +35,16 @@ public class MealItem {
   private String menuContent;
   private String extraInfo;
 
-  public static MenuItem of(String day, Element mealType, Element title, Element content, Element extra) {
-    return new MenuItem(
-        day,
-        mealType.text().trim(),
-        title.text().trim(),
-        content.text().trim(),
-        extra.text().trim()
-    );
+  public static MealItem of(String day, Element mealType, Element title, Element content, Element extra) {
+    return MealItem.builder()
+        .day(day)
+        .mealType(mealType.text().trim())
+        .menuTitle(title.text().trim())
+        .menuContent(content.text().trim())
+        .extraInfo(extra.text().trim())
+        .build();
   }
+
 
   public String getFormattedDate() {
     String datePart = day.split(" ")[0];

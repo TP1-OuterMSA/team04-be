@@ -8,15 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/team04/scraper")
+@RequestMapping("/api/team4/meal")
 @RequiredArgsConstructor
 public class MealItemController {
-
     private final MealItemService mealItemService;
 
-    @GetMapping("/meal")
-    public ResponseEntity<MealItem> getMeal() {
-        return ResponseEntity.ok();
+    @GetMapping("/items")
+    public ResponseEntity<List<MealItem>> getMealItems() {
+        return ResponseEntity.ok(mealItemService.getMealItems());
     }
 }

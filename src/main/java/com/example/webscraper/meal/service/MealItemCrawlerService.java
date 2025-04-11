@@ -1,24 +1,27 @@
 package com.example.webscraper.meal.service;
 
+import com.example.webscraper.meal.entity.MealItem;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
-import webscraper.meal.model.MenuItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
+
 @Slf4j
 @Component
-public class MenuScraper {
+@Service
+public class MealItemCrawlerService {
     private static final String TARGET_URL = "https://www.mju.ac.kr/mjukr/8595/subview.do";
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    public List<MenuItem> scrap() {
-        List<MenuItem> list = new ArrayList<>();
+    public List<MealItem> mealItemCrawler() {
+        List<MealItem> mealItemList = new ArrayList<>();
 
         try {
             Document doc = Jsoup.connect(TARGET_URL).userAgent(USER_AGENT).timeout(15000).get();
@@ -30,7 +33,7 @@ public class MenuScraper {
 
             if (weeklyMenuTable == null) {
                 log.warn("식단 테이블을 찾을 수 없음 - 페이지 구조 변경 가능성");
-                return list;
+                return mealItemList;
             }
 
             Elements rows = weeklyMenuTable.select("tbody tr");
@@ -44,10 +47,10 @@ public class MenuScraper {
                 if (firstCellText.matches("\\d{2}\\.\\d{2}.*\\([월화수목금토일]\\).*")) {
                     currentDay = firstCellText;
                     if (cells.size() >= 5) {
-                        list.add(MenuItem.of(currentDay, cells.get(1), cells.get(2), cells.get(3), cells.get(4)));
+                        mealItemList.add(MealItem.of(currentDay, cells.get(1), cells.get(2), cells.get(3), cells.get(4)));
                     }
                 } else if (currentDay != null && cells.size() >= 4) {
-                    list.add(MenuItem.of(currentDay, cells.get(0), cells.get(1), cells.get(2), cells.get(3)));
+                    mealItemList.add(MealItem.of(currentDay, cells.get(0), cells.get(1), cells.get(2), cells.get(3)));
                 }
             }
 
@@ -55,6 +58,6 @@ public class MenuScraper {
             log.error("스크래핑 오류: {}", e.getMessage());
         }
 
-        return list;
+        return mealItemList;
     }
 }
