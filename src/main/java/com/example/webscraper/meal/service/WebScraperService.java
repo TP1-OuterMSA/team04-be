@@ -1,5 +1,6 @@
-package webscraper.meal.service;
+package com.example.webscraper.meal.service;
 
+import com.example.webscraper.meal.repository.MealItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -9,6 +10,9 @@ import webscraper.meal.model.MenuItem;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import webscraper.meal.service.MenuKafkaProducer;
+import webscraper.meal.service.MenuPersist;
+import webscraper.meal.service.MenuScraper;
 
 @Slf4j
 @Service
@@ -18,7 +22,7 @@ public class WebScraperService {
     private final MenuPersist menuPersister;
     private final MenuKafkaProducer menuKafkaProducer;
 
-    public Map<String, Object> getMeal() {
+    public MealItemRepository getMeal() {
         Map<String, Object> result = new HashMap<>();
         List<MenuItem> menuList = menuScraper.scrap();
         result.put("mealMenu", menuList);
