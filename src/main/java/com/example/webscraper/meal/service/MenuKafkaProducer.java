@@ -1,4 +1,4 @@
-package webscraper.meal.service;
+package com.example.webscraper.meal.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,7 @@ public class MenuKafkaProducer {
         String key = item.generateId();
         String payload = item.toMealJson();
 
-
-//        kafkaTemplate.send(topic, key, payload);
-//        log.info("Kafka 전송 성공 - key: {}, payload: {}", key, payload);
+//      kafkaTemplate.send(topic, key, payload);
+//      log.info("Kafka 전송 성공 - key: {}, payload: {}", key, payload);
     }
 }

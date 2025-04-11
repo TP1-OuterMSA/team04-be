@@ -1,4 +1,4 @@
-package webscraper.meal.service;
+package com.example.webscraper.meal.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
