@@ -1,4 +1,4 @@
-package com.example.webscraper.config;
+package com.example.crawler.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

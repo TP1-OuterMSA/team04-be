@@ -1,7 +1,7 @@
-package com.example.webscraper.meal.service;
+package com.example.crawler.meal.service;
 
-import com.example.webscraper.meal.entity.MealItem;
-import com.example.webscraper.meal.repository.MealItemRepository;
+import com.example.crawler.meal.entity.MealItem;
+import com.example.crawler.meal.repository.MealItemRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
