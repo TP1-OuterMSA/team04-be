@@ -1,7 +1,7 @@
 package com.example.crawler.meal.service;
 
-import com.example.crawler.common.utils.Try;
 import com.example.crawler.meal.entity.MealItem;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,20 +19,21 @@ public class MealItemCrawlerService {
     private static final String USER_AGENT = "Mozilla/5.0";
 
     public List<MealItem> mealItemCrawler() {
-        return Try.of(() -> Jsoup.connect(TARGET_URL).userAgent(USER_AGENT).timeout(15000).get())
-            .map(doc -> {
-                List<MealItem> mealItemList = new ArrayList<>();
-                Element weeklyMenuTable = findWeeklyMenuTable(doc);
-
-                if (weeklyMenuTable != null) {
-                    parseTableRows(weeklyMenuTable.select("tbody tr"), mealItemList);
-                } else {
-                    log.warn("식단 테이블을 찾을 수 없음 - 페이지 구조 변경 가능성");
-                }
+        List<MealItem> mealItemList = new ArrayList<>();
+        try {
+            Document doc = Jsoup.connect(TARGET_URL).userAgent(USER_AGENT).timeout(15000).get();
+            Element weeklyMenuTable = findWeeklyMenuTable(doc);
+            if (weeklyMenuTable == null) {
+                log.warn("식단 테이블을 찾을 수 없음 - 페이지 구조 변경 가능성");
                 return mealItemList;
-            })
-            .orElse(new ArrayList<>());
+            }
+            parseTableRows(weeklyMenuTable.select("tbody tr"), mealItemList);
+        } catch (IOException e) {
+            log.error("식단 페이지 크롤링 중 오류 발생", e);
+        }
+        return mealItemList;
     }
+
 
     private Element findWeeklyMenuTable(Document doc) {
         return doc.select("table").stream()

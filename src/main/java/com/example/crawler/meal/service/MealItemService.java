@@ -19,25 +19,24 @@ public class MealItemService {
   private final MealItemCrawlerService mealItemCrawlerService;
   private final MealItemRepository mealItemRepository;
 
+  // TODO: 리팩토링
   public List<MealItem> getMealItems() {
     List<MealItem> menuList = mealItemCrawlerService.mealItemCrawler();
     if (menuList.isEmpty()) {
       throw new IllegalStateException("식단 데이터를 수집하지 못했습니다.");
     }
 
-    // 저장된 ID 목록 조회
     List<String> existingIds = mealItemRepository.findAll().stream()
         .map(MealItem::generateId)
         .toList();
 
-    // 새로 들어온 항목 중 중복 아닌 것만 필터링
     List<MealItem> newItems = menuList.stream()
         .filter(item -> !existingIds.contains(item.generateId()))
         .toList();
 
     if (!newItems.isEmpty()) {
       mealItemRepository.saveAll(newItems);
-      menuKafkaProducer.sendAllMealItems(newItems);
+//      menuKafkaProducer.sendAllMealItems(newItems);
     }
 
     return mealItemRepository.findAll();
