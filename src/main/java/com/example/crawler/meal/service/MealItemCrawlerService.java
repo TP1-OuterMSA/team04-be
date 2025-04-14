@@ -27,7 +27,7 @@ public class MealItemCrawlerService {
                     if (weeklyMenuTable != null) {
                         parseTableRows(weeklyMenuTable.select("tbody tr"), mealItemList);
                     } else {
-                        log.warn("식단 테이블을 찾을 수 없음 - 페이지 구조 변경 가능성");
+                        log.warn("식단 테이블을 찾을 수 없음 - 페이지 구조  변경 가능성");
                     }
                     return mealItemList;
                 })
