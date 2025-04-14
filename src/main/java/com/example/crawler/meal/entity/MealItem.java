@@ -3,14 +3,10 @@ package com.example.crawler.meal.entity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,37 +19,43 @@ import org.jsoup.nodes.Element;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 public class MealItem {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-
   private String day;
   private String mealType;
-  private String menuTitle;
   private String menuContent;
+  private String menuTitle;
   private String extraInfo;
 
+  private static final ObjectMapper mapper = new ObjectMapper();
+
   public static MealItem of(String day, Element mealType, Element title, Element content, Element extra) {
-    return MealItem.builder()
+    String cleanedContent = content.text()
+        .replaceAll("[\\u2600-\\u26FF]", "")  // Unicode 블록: 날씨 아이콘 등 제거
+        .replaceAll("[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]", "")  // 이모티콘(UTF-16) 제거
+        .replaceAll("[♥★♡☺]", "")  // 특정 특수기호 제거 (예: ♥, ★, ♡, ☺)
+        .replaceAll("\\[.*?\\]", "")  // [ ** day]와 같은 패턴 제거
+        .trim();  // 앞뒤 공백 제거
+
+    MealItem temp = MealItem.builder()
         .day(day)
         .mealType(mealType.text().trim())
         .menuTitle(title.text().trim())
-        .menuContent(content.text().trim())
+        .menuContent(cleanedContent)
         .extraInfo(extra.text().trim())
         .build();
+    temp.id = Long.parseLong(temp.generateId());
+    return temp;
   }
 
 
-  public String getFormattedDate() {
-    String datePart = day.split(" ")[0];
-    String[] parts = datePart.split("\\.");
-    int year = LocalDate.now().getYear();
-    return String.format("%d-%s-%s", year, parts[0], parts[1]);
+  public String getFormattedDate() {//날짜 정규화
+    String[] parts = day.split(" ")[0].split("\\.");
+    return String.format("%d-%s-%s", LocalDate.now().getYear(), parts[0], parts[1]);
   }
 
-  public String generateId() {
+  public String generateId() {//mealType과 날짜에 따라 고유ID생성
     String digit = switch (mealType) {
       case "조식" -> "1";
       case "중식" -> "2";
@@ -63,35 +65,15 @@ public class MealItem {
     return getFormattedDate().replaceAll("-", "") + digit;
   }
 
-  public String getFullContents() {
-    return String.join(" ", menuTitle, menuContent, extraInfo).trim();
-  }
+  public Map<String, Object> toSimpleJson() {
+    Map<String, Object> map = new HashMap<>();
+    map.put("mealType", mealType);
 
+    List<String> menuNames = Arrays.stream(menuContent.split("\\s+"))
+        .filter(s -> !s.isBlank())
+        .toList();
 
-  public String toMealJson() {
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> jsonMap = new HashMap<>();
-
-    jsonMap.put("id", Long.parseLong(generateId()));
-    jsonMap.put("dayInfo", getFormattedDate());
-    jsonMap.put("mealType", switch (mealType) {
-      case "조식" -> "BREAKFAST";
-      case "중식" -> "LUNCH";
-      case "석식" -> "DINNER";
-      default -> "UNKNOWN";
-    });
-
-    List<String> menuNames = new ArrayList<>();
-    if (!menuTitle.isBlank()) menuNames.add(menuTitle);
-    if (!menuContent.isBlank()) menuNames.add(menuContent);
-    if (!extraInfo.isBlank()) menuNames.add(extraInfo);
-
-    jsonMap.put("menuNames", menuNames);
-
-    try {
-      return mapper.writeValueAsString(jsonMap);
-    } catch (JsonProcessingException e) {
-      return "{}";
-    }
+    map.put("menuContents", menuNames);
+    return map;
   }
 }
