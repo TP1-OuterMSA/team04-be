@@ -1,7 +1,7 @@
-package com.example.webscraper.meal.service;
+package com.example.crawler.meal.service;
 
-import com.example.webscraper.meal.entity.MealItem;
-import com.example.webscraper.meal.repository.MealItemRepository;
+import com.example.crawler.meal.entity.MealItem;
+import com.example.crawler.meal.repository.MealItemRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,26 +25,22 @@ public class MealItemService {
       throw new IllegalStateException("식단 데이터를 수집하지 못했습니다.");
     }
 
-    // 저장된 ID 목록 조회
     List<String> existingIds = mealItemRepository.findAll().stream()
-        .map(MealItem::generateId)
-        .toList();
+            .map(MealItem::generateId)
+            .toList();
 
-    // 새로 들어온 항목 중 중복 아닌 것만 필터링
+
     List<MealItem> newItems = menuList.stream()
-        .filter(item -> !existingIds.contains(item.generateId()))
-        .toList();
+            .filter(item -> !existingIds.contains(item.generateId()))
+            .toList();
 
-    if (newItems.isEmpty()) {
-      log.info("저장할 새로운 식단 데이터 없음");
-      return menuList;
+    if (!newItems.isEmpty()) {
+      mealItemRepository.saveAll(newItems);
+      menuKafkaProducer.sendAllMealItems(newItems);
     }
 
-    List<MealItem> result = mealItemRepository.saveAll(newItems);
-    menuKafkaProducer.sendAllMealItems(result);
-    return result;
+    return mealItemRepository.findAll();
   }
-
 
   @Scheduled(fixedRate = 3600000)
   public void scheduledMeal() {

@@ -1,6 +1,6 @@
-package com.example.webscraper.meal.repository;
+package com.example.crawler.meal.repository;
 
-import com.example.webscraper.meal.entity.MealItem;
+import com.example.crawler.meal.entity.MealItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MealItemRepository extends JpaRepository<MealItem, Long> {
