@@ -35,14 +35,12 @@ public class MealItemService {
         .filter(item -> !existingIds.contains(item.generateId()))
         .toList();
 
-    if (newItems.isEmpty()) {
-      log.info("저장할 새로운 식단 데이터 없음");
-      return menuList;
+    if (!newItems.isEmpty()) {
+      mealItemRepository.saveAll(newItems);
+      menuKafkaProducer.sendAllMealItems(newItems);
     }
 
-    List<MealItem> result = mealItemRepository.saveAll(newItems);
-    menuKafkaProducer.sendAllMealItems(result);
-    return result;
+    return mealItemRepository.findAll();
   }
 
 
