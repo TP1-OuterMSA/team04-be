@@ -2,6 +2,10 @@ package com.example.crawler.meal.service;
 
 import com.example.crawler.meal.entity.MealItem;
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,20 +16,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MenuKafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
-    private final String topic = "meal.web-scraper.updated";
-
-    public void sendMenu(MealItem item) {
-        String key = item.generateId();
-        String payload = item.toMealJson();
-
-//      kafkaTemplate.send(topic, key, payload);
-//      log.info("Kafka 전송 성공 - key: {}, payload: {}", key, payload);
-    }
 
     public void sendAllMealItems(List<MealItem> items) {
-        for (MealItem item : items) {
-            sendMenu(item);
+        List<Map<String, Object>> simplifiedList = items.stream().map(MealItem::toSimpleJson).toList();
+
+        try {
+            String payload = new ObjectMapper().writeValueAsString(simplifiedList);
+            String topic = "meal.web-crawler.updated";
+            kafkaTemplate.send(topic, "meal-data", payload);
+
+            log.info("Kafka 전송 성공 - payload: {}", payload);
+        } catch (JsonProcessingException e) {
+            log.error("Kafka JSON 직렬화 실패", e);
         }
-        log.info("Kafka 전송 성공 - key: {}, payload: {}", items.get(0).generateId(), items.get(0).toMealJson());
     }
 }
