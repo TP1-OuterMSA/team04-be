@@ -1,12 +1,10 @@
 package com.example.crawler.meal.component;
 
 import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class MealTableHtmlFetcher {
 
@@ -14,8 +12,8 @@ public class MealTableHtmlFetcher {
 
   public Document fetch(String url) throws IOException {
     return Jsoup.connect(url)
-        .userAgent(USER_AGENT)
-        .timeout(15000)
-        .get();
+            .userAgent(USER_AGENT)
+            .timeout(15000)
+            .get();
   }
 }

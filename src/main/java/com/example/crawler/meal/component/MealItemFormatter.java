@@ -7,26 +7,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class MealItemFormatter {
 
+  private static final DateTimeFormatter ID_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+
   public String formatId(String mealType, LocalDate date) {
-    String digit = switch (mealType) {
+    String typeDigit = switch (mealType) {
       case "breakfast" -> "1";
       case "lunch" -> "2";
       case "dinner" -> "3";
       default -> "0";
     };
-    return date.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + digit;
-  }
 
+    String datePart = date.format(ID_DATE_FORMATTER);
+    return datePart + typeDigit;
+  }
 
   public LocalDate formatDate(String rawDay) {
-    String[] parts = rawDay.split(" ")[0].split("\\.");
-    return LocalDate.of(
-        LocalDate.now().getYear(),
-        Integer.parseInt(parts[0]),
-        Integer.parseInt(parts[1])
-    );
+    String[] dateParts = extractDatePart(rawDay);
+
+    int year = LocalDate.now().getYear();
+    int month = Integer.parseInt(dateParts[0]);
+    int day = Integer.parseInt(dateParts[1]);
+
+    return LocalDate.of(year, month, day);
   }
 
+  private String[] extractDatePart(String rawDay) {
+    String dateSegment = rawDay.split(" ")[0];
+    return dateSegment.split("\\.");
+  }
 
   public String formatMealType(String rawText) {
     return switch (rawText.trim()) {
@@ -39,10 +47,10 @@ public class MealItemFormatter {
 
   public String formatMenuContent(String rawContent) {
     return rawContent
-        .replaceAll("[\\u2600-\\u26FF]", "")
-        .replaceAll("[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]", "")
-        .replaceAll("[♥★♡☺]", "")
-        .replaceAll("\\[.*?]", "")
-        .trim();
+            .replaceAll("[\\u2600-\\u26FF]", "") // 기호
+            .replaceAll("[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]", "") // 이모지
+            .replaceAll("[♥★♡☺]", "")
+            .replaceAll("\\[.*?]", "")
+            .trim();
   }
 }

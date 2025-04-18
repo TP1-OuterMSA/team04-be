@@ -1,39 +1,43 @@
 package com.example.crawler.meal.service;
 
+import com.example.crawler.meal.component.MealItemFilter;
 import com.example.crawler.meal.component.MenuKafkaProducer;
 import com.example.crawler.meal.entity.MealItem;
 import com.example.crawler.meal.repository.MealItemRepository;
+import com.example.crawler.meal.vo.MealItemId;
+import com.example.crawler.meal.vo.MealItemList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class MealItemService {
 
-  private final MenuKafkaProducer menuKafkaProducer;
-  private final MealTableCrawlerService mealTableCrawlerService;
   private final MealItemRepository mealItemRepository;
+  private final MealTableCrawlerService mealTableCrawlerService;
+  private final MealItemFilter mealItemFilter;
+  private final MenuKafkaProducer menuKafkaProducer;
 
-  // TODO: 리팩토링
   public List<MealItem> getMealItems() {
-    List<MealItem> menuList = mealTableCrawlerService.mealTableCrawler();
+    List<MealItem> crawledItems = mealTableCrawlerService.mealTableCrawler();
 
-    List<Integer> existingIds = mealItemRepository.findAllIds();
+    MealItemList itemList = new MealItemList(crawledItems);
+    List<MealItemId> existingIds = mealItemRepository.findAllIds()
+            .stream()
+            .map(MealItemId::new)
+            .toList();
 
-    List<MealItem> newItems = menuList.stream()
-        .filter(item -> !existingIds.contains(item.getId()))
-        .toList();
+    List<MealItem> newItems = mealItemFilter.filterNewItems(itemList, existingIds);
 
-    if (!newItems.isEmpty()) {
-      mealItemRepository.saveAll(newItems);
-      //menuKafkaProducer.sendAllMealItems(newItems);
+    if (newItems.isEmpty()) {
+      return crawledItems;
     }
 
-    return menuList;
+    mealItemRepository.saveAll(newItems);
+    menuKafkaProducer.sendAll(newItems);
+    return crawledItems;
   }
 }

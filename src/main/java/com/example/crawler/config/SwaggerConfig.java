@@ -9,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("MJ API")
-                        .description("명지대학교 학생식당 크롤링")
-                        .version("1.0.0")
-                );
+    public OpenAPI openApi() {
+        Info info = new Info();
+        info.setTitle("MJ API");
+        info.setDescription("명지대학교 학생식당 크롤링");
+        info.setVersion("1.0.0");
+
+        return new OpenAPI().info(info);
     }
 }

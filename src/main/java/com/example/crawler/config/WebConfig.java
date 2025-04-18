@@ -2,7 +2,6 @@ package com.example.crawler.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.micrometer.common.lang.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -15,14 +14,14 @@ public class WebConfig {
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
-			public void addCorsMappings(@NonNull CorsRegistry registry) {
+			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-					.allowedOrigins("*")
-					.allowedMethods("*")  // 모든 HTTP 메서드 허용
-					.allowedHeaders("*")
-					.allowCredentials(false)
-					.maxAge(3600L)
-					.exposedHeaders("Set-Cookie", "Authorization");
+						.allowedOrigins("*")
+						.allowedMethods("*")
+						.allowedHeaders("*")
+						.allowCredentials(false)
+						.maxAge(3600L)
+						.exposedHeaders("Set-Cookie", "Authorization");
 			}
 		};
 	}
