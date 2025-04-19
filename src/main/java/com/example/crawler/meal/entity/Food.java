@@ -26,8 +26,15 @@ public class Food {
     protected Food() {
     }
 
+    // 기존 이름만 받는 생성자
     public Food(String name) {
         this.name = name;
+    }
+
+    // 새로운 category 포함 생성자
+    public Food(String name, String category) {
+        this.name = name;
+        this.category = category;
     }
 
     public Integer getId() {
@@ -56,5 +63,9 @@ public class Food {
 
     public List<FoodMenu> getFoodMenus() {
         return foodMenus;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

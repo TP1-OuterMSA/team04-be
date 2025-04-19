@@ -34,6 +34,8 @@ public class MealCrawlingService {
     private final FoodRepository foodRepository;
     private final FoodMenuRepository foodMenuRepository;
 
+    private final FoodCategoryClient foodCategoryClient; // ✅ 외부 분류 API 클라이언트
+
     private static final String URL = "https://www.mju.ac.kr/mjukr/8595/subview.do";
 
     @Transactional
@@ -73,10 +75,12 @@ public class MealCrawlingService {
 
         for (String rawFoodName : result.foodNames()) {
             String name = formatter.normalizeFoodName(rawFoodName);
-            Food food = foodRepository.findByName(name)
-                    .orElseGet(() -> foodRepository.save(new Food(name)));
 
-            // ✅ 중복 확인 후 저장
+            Food food = foodRepository.findByName(name).orElseGet(() -> {
+                String category = foodCategoryClient.classify(name); // 🔍 외부 API 분류 호출
+                return foodRepository.save(new Food(name, category));
+            });
+
             boolean alreadyExists = foodMenuRepository.findByMenuAndFood(menu, food).isPresent();
             if (!alreadyExists) {
                 FoodMenu foodMenu = new FoodMenu(menu, food);
