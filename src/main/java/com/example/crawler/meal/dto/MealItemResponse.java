@@ -1,6 +1,7 @@
 package com.example.crawler.meal.dto;
 
-import com.example.crawler.meal.entity.MealItem;
+import com.example.crawler.meal.entity.FoodMenu;
+
 import java.time.LocalDate;
 
 public class MealItemResponse {
@@ -28,14 +29,14 @@ public class MealItemResponse {
         this.extraInfo = extraInfo;
     }
 
-    public static MealItemResponse from(MealItem item) {
+    public static MealItemResponse from(FoodMenu foodMenu) {
         return new MealItemResponse(
-                item.id(),
-                item.day(),
-                item.mealType(),
-                item.menuTitle(),
-                item.menuContent(),
-                item.extraInfo()
+                foodMenu.getMenu().getId(),
+                foodMenu.getMenu().getDate(),
+                foodMenu.getMenu().getMealType(),
+                "", // menuTitle 없음
+                foodMenu.getFood().getName(), // 식단 항목명
+                ""  // extraInfo 없음
         );
     }
 
