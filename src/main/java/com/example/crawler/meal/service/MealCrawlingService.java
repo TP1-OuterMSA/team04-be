@@ -76,8 +76,12 @@ public class MealCrawlingService {
             Food food = foodRepository.findByName(name)
                     .orElseGet(() -> foodRepository.save(new Food(name)));
 
-            FoodMenu foodMenu = new FoodMenu(menu, food);
-            foodMenuRepository.save(foodMenu);
+            // ✅ 중복 확인 후 저장
+            boolean alreadyExists = foodMenuRepository.findByMenuAndFood(menu, food).isPresent();
+            if (!alreadyExists) {
+                FoodMenu foodMenu = new FoodMenu(menu, food);
+                foodMenuRepository.save(foodMenu);
+            }
         }
     }
 }

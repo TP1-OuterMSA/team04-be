@@ -3,7 +3,7 @@ package com.example.crawler.meal.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "food_menu")
+@Table(name = "food_menu", uniqueConstraints = @UniqueConstraint(columnNames = {"menu_id", "food_id"}))
 public class FoodMenu {
 
     @Id
