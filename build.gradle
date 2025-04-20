@@ -55,3 +55,16 @@ avro {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs += 'build/generated-main-avro-java'
+        }
+    }
+}
+
+avro {
+    stringType = "String"
+    fieldVisibility = "PRIVATE"
+}
