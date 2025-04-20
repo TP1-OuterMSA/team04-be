@@ -2,6 +2,7 @@ package com.example.crawler.meal.component;
 
 
 import com.example.crawler.meal.entity.MealItem;
+import com.example.kafka_schemas.MealEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

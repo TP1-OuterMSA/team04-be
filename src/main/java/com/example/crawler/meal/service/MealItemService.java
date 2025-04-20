@@ -31,7 +31,7 @@ public class MealItemService {
 
     if (!newItems.isEmpty()) {
       mealItemRepository.saveAll(newItems);
-      //menuKafkaProducer.sendAllMealItems(newItems);
+      menuKafkaProducer.sendAllMealItems(newItems);
     }
 
     return menuList;
