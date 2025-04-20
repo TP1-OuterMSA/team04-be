@@ -9,23 +9,23 @@ public class MealItemResponse {
     private final int id;
     private final LocalDate day;
     private final String mealType;
-    private final String menuTitle;
     private final String menuContent;
+    private final String menuTitle;
     private final String extraInfo;
 
     public MealItemResponse(
             int id,
             LocalDate day,
             String mealType,
-            String menuTitle,
             String menuContent,
+            String menuTitle,
             String extraInfo
     ) {
         this.id = id;
         this.day = day;
         this.mealType = mealType;
-        this.menuTitle = menuTitle;
         this.menuContent = menuContent;
+        this.menuTitle = menuTitle;
         this.extraInfo = extraInfo;
     }
 
@@ -34,8 +34,8 @@ public class MealItemResponse {
                 foodMenu.getMenu().getId(),
                 foodMenu.getMenu().getDate(),
                 foodMenu.getMenu().getMealType(),
+                foodMenu.getFood().getName(), // menuContent
                 "", // menuTitle 없음
-                foodMenu.getFood().getName(), // 식단 항목명
                 ""  // extraInfo 없음
         );
     }
@@ -52,12 +52,12 @@ public class MealItemResponse {
         return mealType;
     }
 
-    public String getMenuTitle() {
-        return menuTitle;
-    }
-
     public String getMenuContent() {
         return menuContent;
+    }
+
+    public String getMenuTitle() {
+        return menuTitle;
     }
 
     public String getExtraInfo() {

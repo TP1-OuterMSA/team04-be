@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,7 +31,16 @@ public class MealItemController {
 
     @GetMapping("/items")
     public ResponseEntity<List<MealItemResponse>> getMealItems() {
-        List<FoodMenu> foodMenus = foodMenuRepository.findAll();
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = today.with(DayOfWeek.FRIDAY);
+
+        List<FoodMenu> foodMenus = foodMenuRepository.findAll().stream()
+                .filter(fm -> {
+                    LocalDate date = fm.getMenu().getDate();
+                    return !date.isBefore(startOfWeek) && !date.isAfter(endOfWeek);
+                })
+                .toList();
 
         Map<Integer, List<FoodMenu>> grouped = foodMenus.stream()
                 .collect(Collectors.groupingBy(fm -> fm.getMenu().getId()));
@@ -45,8 +55,8 @@ public class MealItemController {
                     id,
                     menu.getDate(),
                     menu.getMealType(),
-                    menu.getMenuTitle(),
                     menu.getMenuContent(),
+                    menu.getMenuTitle(),
                     menu.getExtraInfo()
             ));
         }
