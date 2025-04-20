@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "OrderEvent",
+  "namespace": "com.example.kafka_demo_order",
+  "fields": [
+    { "name": "orderId", "type": "int" },
+    { "name": "status", "type": "string" },
+    { "name": "qty", "type": "int" }
+  ]
+}
