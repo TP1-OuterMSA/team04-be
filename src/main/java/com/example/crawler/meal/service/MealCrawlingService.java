@@ -76,16 +76,22 @@ public class MealCrawlingService {
         for (String rawFoodName : result.foodNames()) {
             String name = formatter.normalizeFoodName(rawFoodName);
 
-            Food food = foodRepository.findByName(name).orElseGet(() -> {
-                String category = foodCategoryClient.classify(name); // 🔍 외부 API 분류 호출
-                return foodRepository.save(new Food(name, category));
-            });
+            Food food = foodRepository.findByName(name).orElse(null);
+
+            if (food == null) {
+                String category = foodCategoryClient.classify(name);
+                food = foodRepository.save(new Food(name, category));
+            } else if (food.getCategory() == null || food.getCategory().isBlank()) {
+                String category = foodCategoryClient.classify(name);
+                food.setCategory(category);
+                foodRepository.save(food);
+            }
 
             boolean alreadyExists = foodMenuRepository.findByMenuAndFood(menu, food).isPresent();
             if (!alreadyExists) {
-                FoodMenu foodMenu = new FoodMenu(menu, food);
-                foodMenuRepository.save(foodMenu);
+                foodMenuRepository.save(new FoodMenu(menu, food));
             }
         }
     }
+
 }
