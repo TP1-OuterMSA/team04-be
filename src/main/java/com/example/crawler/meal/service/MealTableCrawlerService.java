@@ -3,7 +3,7 @@ package com.example.crawler.meal.service;
 import com.example.crawler.meal.component.MealTableExtractor;
 import com.example.crawler.meal.component.MealTableHtmlFetcher;
 import com.example.crawler.meal.component.MealTableParser;
-import com.example.crawler.meal.entity.MealItem;
+import com.example.crawler.meal.entity.Menu;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +24,7 @@ public class MealTableCrawlerService {
   private final MealTableExtractor mealtableExtractor;
   private final MealTableParser mealtableParser;
 
-  public List<MealItem> mealTableCrawler() {
+  public List<Menu> mealTableCrawler() {
     try {
       Document document = mealtableHtmlFetcher.fetch(TARGET_URL);
       Element table = mealtableExtractor.extractWeeklyMenuTable(document);

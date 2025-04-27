@@ -1,7 +1,7 @@
 package com.example.crawler.meal.controller;
 
-import com.example.crawler.meal.entity.MealItem;
-import com.example.crawler.meal.service.MealItemService;
+import com.example.crawler.meal.entity.Menu;
+import com.example.crawler.meal.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/team4/meal")
+@RequestMapping("/api/team4/item")
 @RequiredArgsConstructor
 public class MealItemController {
-    private final MealItemService mealItemService;
+    private final MenuService menuService;
 
-    @GetMapping("/items")
-    public ResponseEntity<List<MealItem>> getMealItems() {
-        return ResponseEntity.ok(mealItemService.getMealItems());
+    @GetMapping("/menus")
+    public ResponseEntity<List<Menu>> getMenuItems() {
+        return ResponseEntity.ok(menuService.getMenuItems());
     }
 }

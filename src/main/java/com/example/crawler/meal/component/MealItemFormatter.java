@@ -7,17 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MealItemFormatter {
 
-  public String formatId(String mealType, LocalDate date) {
-    String digit = switch (mealType) {
-      case "breakfast" -> "1";
-      case "lunch" -> "2";
-      case "dinner" -> "3";
-      default -> "0";
-    };
-    return date.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + digit;
-  }
-
-
   public LocalDate formatDate(String rawDay) {
     String[] parts = rawDay.split(" ")[0].split("\\.");
     return LocalDate.of(

@@ -1,6 +1,6 @@
 package com.example.crawler.meal.component;
 
-import com.example.crawler.meal.entity.MealItem;
+import com.example.crawler.meal.entity.Menu;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,8 @@ public class MealTableParser {
 
   private final MealItemFormatter formatter;
 
-  public List<MealItem> parse(Element tableElement) {
-    List<MealItem> mealItems = new ArrayList<>();
+  public List<Menu> parse(Element tableElement) {
+    List<Menu> mealItems = new ArrayList<>();
     if (tableElement == null) {
       throw new IllegalStateException("식단 데이터를 수집하지 못했습니다.");
     }
@@ -37,25 +37,24 @@ public class MealTableParser {
         currentDay = firstCell;
         if (cells.size() >= 5) {
           mealItems.add(
-              buildMealItem(currentDay, cells.get(1), cells.get(2), cells.get(3), cells.get(4)));
+              buildMenuItem(currentDay, cells.get(1), cells.get(2), cells.get(3), cells.get(4)));
         }
       } else if (currentDay != null && cells.size() >= 4) {
         mealItems.add(
-            buildMealItem(currentDay, cells.get(0), cells.get(1), cells.get(2), cells.get(3)));
+            buildMenuItem(currentDay, cells.get(0), cells.get(1), cells.get(2), cells.get(3)));
       }
     }
     return mealItems;
   }
 
-  private MealItem buildMealItem(String rawDay, Element rawMealType, Element rawTitle,
+  private Menu buildMenuItem(String rawDay, Element rawMealType, Element rawTitle,
       Element rawContent, Element rawExtra) {
     String mealType = formatter.formatMealType(rawMealType.text());
     String title = rawTitle.text().trim();
     String content = formatter.formatMenuContent(rawContent.text());
     String extra = rawExtra.text().trim();
     LocalDate date = formatter.formatDate(rawDay);
-    int id = Integer.parseInt(formatter.formatId(mealType, date));
 
-    return MealItem.of(id, date, mealType, title, content, extra);
+    return Menu.of(date, mealType, title, content, extra);
   }
 }
