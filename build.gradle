@@ -32,7 +32,6 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.jsoup:jsoup:1.15.4'
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
@@ -44,7 +43,6 @@ dependencies {
     implementation 'org.apache.avro:avro:1.11.4'
     implementation 'io.confluent:kafka-avro-serializer:7.6.0'
 
-    // monitoring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 

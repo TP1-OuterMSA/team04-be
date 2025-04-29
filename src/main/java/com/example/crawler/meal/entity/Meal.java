@@ -37,8 +37,9 @@ public class Meal {
     private String nutrition;
     private Integer calorie;
     private String allergy;
+
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("meal-mealMenu")
     private List<MealMenu> mealMenus = new ArrayList<>();
 
     public Meal(String name) {

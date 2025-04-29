@@ -1,11 +1,10 @@
 package com.example.crawler.meal.component;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MealItemFormatter {
+public class MealMenuFormatter {
 
   public LocalDate formatDate(String rawDay) {
     String[] parts = rawDay.split(" ")[0].split("\\.");
@@ -28,6 +27,7 @@ public class MealItemFormatter {
 
   public String formatMenuContent(String rawContent) {
     return rawContent
+        .replaceAll("(\\d+/\\d+개|\\d+개|\\d+g|\\d+인분|\\d+잔|\\d+그릇)", "")
         .replaceAll("[\\u2600-\\u26FF]", "")
         .replaceAll("[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]", "")
         .replaceAll("[♥★♡☺]", "")

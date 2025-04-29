@@ -1,6 +1,5 @@
 package com.example.crawler.meal.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,13 +15,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Entity
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"menuId", "mealId"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"menu_id", "meal_id"}))
 public class MealMenu {
 
     @Id
@@ -31,11 +31,12 @@ public class MealMenu {
 
     @ManyToOne
     @JoinColumn(name = "menu_id")
-    @JsonBackReference
+    @JsonBackReference("menu-mealMenu")
     private Menu menu;
 
     @ManyToOne
     @JoinColumn(name = "meal_id")
+    @JsonBackReference("meal-mealMenu")
     private Meal meal;
 
     public MealMenu(Menu menu, Meal meal) {

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/team4/item")
+@RequestMapping("/api/team4/meal")
 @RequiredArgsConstructor
-public class MealItemController {
+public class MealMenuController {
     private final MenuService menuService;
 
     @GetMapping("/menus")

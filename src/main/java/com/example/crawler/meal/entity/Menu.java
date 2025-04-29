@@ -37,7 +37,7 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    @JsonManagedReference
+    @JsonManagedReference("menu-mealMenu")
     private List<MealMenu> mealMenus = new ArrayList<>();
 
     public void addMealMenu(MealMenu mealMenu) {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class MealTableHtmlFetcher {
+public class MealMenuHtmlFetcher {
 
   private static final String USER_AGENT = "Mozilla/5.0";
 

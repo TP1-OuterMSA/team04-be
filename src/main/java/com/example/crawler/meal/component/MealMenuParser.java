@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MealTableParser {
+public class MealMenuParser {
 
-  private final MealItemFormatter formatter;
+  private final MealMenuFormatter formatter;
 
   public List<Menu> parse(Element tableElement) {
     List<Menu> mealItems = new ArrayList<>();
