@@ -1,4 +1,4 @@
-package com.example.crawler.meal.component;
+package com.example.crawler.meal.component.db;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

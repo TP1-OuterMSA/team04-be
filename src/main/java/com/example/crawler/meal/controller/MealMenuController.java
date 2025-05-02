@@ -1,6 +1,6 @@
 package com.example.crawler.meal.controller;
 
-import com.example.crawler.meal.entity.Menu;
+import com.example.crawler.meal.dto.MenuResponseDto;
 import com.example.crawler.meal.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class MealMenuController {
     private final MenuService menuService;
 
     @GetMapping("/menus")
-    public ResponseEntity<List<Menu>> getMenuItems() {
+    public ResponseEntity<List<MenuResponseDto>> getMenuItems() {
         return ResponseEntity.ok(menuService.getMenuItems());
     }
 }

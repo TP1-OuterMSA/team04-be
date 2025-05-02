@@ -26,8 +26,7 @@ import lombok.Setter;
 public class Menu {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long menuId;
+    private Integer menuId;
 
     private LocalDate date;
     private String mealType;
@@ -40,23 +39,9 @@ public class Menu {
     @JsonManagedReference("menu-mealMenu")
     private List<MealMenu> mealMenus = new ArrayList<>();
 
-    public void addMealMenu(MealMenu mealMenu) {
-        mealMenus.add(mealMenu);
-        mealMenu.setMenu(this);
-    }
-
-    public void removeMealMenu(MealMenu mealMenu) {
-        mealMenus.remove(mealMenu);
-        mealMenu.setMenu(null);
-    }
-
-    public Menu(LocalDate date, String mealType) {
-        this.date = date;
-        this.mealType = mealType;
-    }
-
-    public static Menu of(LocalDate date, String mealType, String menuTitle, String menuContent, String extraInfo) {
+    public static Menu of(int menuId,LocalDate date, String mealType, String menuTitle, String menuContent, String extraInfo) {
         return Menu.builder()
+            .menuId(menuId)
             .date(date)
             .mealType(mealType)
             .menuTitle(menuTitle)

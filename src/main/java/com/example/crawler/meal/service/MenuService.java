@@ -1,7 +1,9 @@
 package com.example.crawler.meal.service;
 
 import com.example.crawler.meal.component.MenuKafkaProducer;
-import com.example.crawler.meal.component.NewMenuProcessor;
+import com.example.crawler.meal.component.MenuMapper;
+import com.example.crawler.meal.component.db.NewMenuAdder;
+import com.example.crawler.meal.dto.MenuResponseDto;
 import com.example.crawler.meal.entity.Menu;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +18,15 @@ public class MenuService {
 
   private final MenuKafkaProducer menuKafkaProducer;
   private final MealMenuCrawlerService mealMenuCrawlerService;
-  private final NewMenuProcessor newMenuProcessor;
-
-  public List<Menu> getMenuItems() {
+  private final NewMenuAdder newMenuAdder;
+  private final MenuMapper menuMapper;
+  public List<MenuResponseDto> getMenuItems() {
     List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler();
 
-    newMenuProcessor.processNewMenus(menuList);
+    newMenuAdder.isNewMenus(menuList);
 
-    return menuList;
+    return menuList.stream()
+        .map(menuMapper::toDto)
+        .toList();
   }
 }

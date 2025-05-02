@@ -1,8 +1,8 @@
 package com.example.crawler.meal.service;
 
-import com.example.crawler.meal.component.MealMenuExtractor;
-import com.example.crawler.meal.component.MealMenuHtmlFetcher;
-import com.example.crawler.meal.component.MealMenuParser;
+import com.example.crawler.meal.component.crawling.MealMenuExtractor;
+import com.example.crawler.meal.component.crawling.MealMenuHtmlFetcher;
+import com.example.crawler.meal.component.crawling.MealMenuParser;
 import com.example.crawler.meal.entity.Menu;
 import java.io.IOException;
 import java.util.Collections;

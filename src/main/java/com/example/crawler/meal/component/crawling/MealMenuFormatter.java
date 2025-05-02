@@ -1,10 +1,28 @@
-package com.example.crawler.meal.component;
+package com.example.crawler.meal.component.crawling;
 
 import java.time.LocalDate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MealMenuFormatter {
+
+  public Integer formatMenuId(LocalDate date, String mealType) {
+    int typeCode = switch (mealType) {
+      case "breakfast" -> 1;
+      case "lunch" -> 2;
+      case "dinner" -> 3;
+      default -> 0;
+    };
+
+    String idStr = String.format("%04d%02d%02d%02d",
+        date.getYear(),
+        date.getMonthValue(),
+        date.getDayOfMonth(),
+        typeCode
+    );
+    return Integer.parseInt(idStr);
+  }
+
 
   public LocalDate formatDate(String rawDay) {
     String[] parts = rawDay.split(" ")[0].split("\\.");

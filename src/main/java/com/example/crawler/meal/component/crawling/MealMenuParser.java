@@ -1,4 +1,4 @@
-package com.example.crawler.meal.component;
+package com.example.crawler.meal.component.crawling;
 
 import com.example.crawler.meal.entity.Menu;
 import java.time.LocalDate;
@@ -54,7 +54,7 @@ public class MealMenuParser {
     String content = formatter.formatMenuContent(rawContent.text());
     String extra = rawExtra.text().trim();
     LocalDate date = formatter.formatDate(rawDay);
-
-    return Menu.of(date, mealType, title, content, extra);
+    Integer generatedId = formatter.formatMenuId(date, mealType);
+    return Menu.of(generatedId, date, mealType, title, content, extra);
   }
 }

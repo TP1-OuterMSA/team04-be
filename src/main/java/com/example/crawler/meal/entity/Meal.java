@@ -42,9 +42,6 @@ public class Meal {
     @JsonManagedReference("meal-mealMenu")
     private List<MealMenu> mealMenus = new ArrayList<>();
 
-    public Meal(String name) {
-        this.mealName = name;
-    }
 
     public static Meal of(String foodName) {
         Meal meal = new Meal();
