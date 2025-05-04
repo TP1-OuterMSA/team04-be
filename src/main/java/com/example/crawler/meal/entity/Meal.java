@@ -13,10 +13,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Setter;
 
 @Entity
 @Builder
@@ -32,16 +32,17 @@ public class Meal {
 
     @Column(nullable = false)
     private String mealName;
-
     private String mealCategory;
-    private String nutrition;
-    private Integer calorie;
     private String allergy;
+
+    private Double calorie;
+    private Double carb;
+    private Double protein;
+    private Double fat;
 
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("meal-mealMenu")
     private List<MealMenu> mealMenus = new ArrayList<>();
-
 
     public static Meal of(String foodName) {
         Meal meal = new Meal();

@@ -22,9 +22,11 @@ public class MenuService {
   private final MenuMapper menuMapper;
   public List<MenuResponseDto> getMenuItems() {
     List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler();
+    List<Menu> newMenus = newMenuAdder.addNewMenus(menuList);
 
-    newMenuAdder.isNewMenus(menuList);
-
+    if (!newMenus.isEmpty()) {
+    //  menuKafkaProducer.sendAllMealItems(newMenus);
+    }
     return menuList.stream()
         .map(menuMapper::toDto)
         .toList();
