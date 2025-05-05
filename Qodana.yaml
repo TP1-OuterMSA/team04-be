@@ -1,4 +1,7 @@
 version: "1.0"
 profile:
   name: qodana.recommended
+linter: jetbrains/qodana-jvm:2024.3
 projectJDK: 17
+properties:
+  - org.gradle.java.installations.auto-download=true
