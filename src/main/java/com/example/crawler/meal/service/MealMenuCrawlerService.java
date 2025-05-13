@@ -19,11 +19,12 @@ import org.springframework.stereotype.Service;
 public class MealMenuCrawlerService {
 
   private static final List<String> TARGET_URLS = List.of(
-          "https://www.mju.ac.kr/mjukr/8595/subview.do",
-          "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNS4wNSUyNndlZWslM0RwcmUlMjY%3D",
-          "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNC4yOCUyNndlZWslM0RwcmUlMjY%3D",
-          "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNC4yMSUyNndlZWslM0RwcmUlMjY%3D",
-          "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNC4xNCUyNndlZWslM0RwcmUlMjY%3D"
+      "https://www.mju.ac.kr/mjukr/8595/subview.do",
+ "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNS4xMiUyNndlZWslM0RwcmUlMjY%3D" ,
+     "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNS4wNSUyNndlZWslM0RwcmUlMjY%3D",
+     "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNC4yOCUyNndlZWslM0RwcmUlMjY%3D",
+    "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNC4yMSUyNndlZWslM0RwcmUlMjY%3D",
+   "https://www.mju.ac.kr/mjukr/8595/subview.do?enc=Zm5jdDF8QEB8JTJGZGlldCUyRm1qdWtyJTJGMTAlMkZ2aWV3LmRvJTNGbW9uZGF5JTNEMjAyNS4wNC4xNCUyNndlZWslM0RwcmUlMjY%3D"
   );
 
   private final MealMenuHtmlFetcher mealMenuHtmlFetcher;

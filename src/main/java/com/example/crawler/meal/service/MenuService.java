@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -20,6 +21,7 @@ public class MenuService {
   private final MealMenuCrawlerService mealMenuCrawlerService;
   private final NewMenuAdder newMenuAdder;
   private final MenuMapper menuMapper;
+
   public List<MenuResponseDto> getMenuItems() {
     List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler();
     List<Menu> newMenus = newMenuAdder.addNewMenus(menuList);

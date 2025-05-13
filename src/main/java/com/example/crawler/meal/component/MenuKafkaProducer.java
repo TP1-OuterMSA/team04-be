@@ -1,6 +1,5 @@
 package com.example.crawler.meal.component;
 
-
 import com.example.crawler.meal.entity.Menu;
 import com.example.kafka_schemas.MealEvent;
 import java.util.List;

@@ -33,12 +33,12 @@ public class Meal {
     @Column(nullable = false)
     private String mealName;
     private String mealCategory;
-    private String allergy;
 
-    private Double calorie;
-    private Double carb;
-    private Double protein;
-    private Double fat;
+    private Double calorie_kcal;
+    private Double carb_g;
+    private Double protein_g;
+    private Double fat_g;
+    private String foodWeight;
 
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("meal-mealMenu")
