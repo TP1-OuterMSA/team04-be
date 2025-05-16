@@ -19,10 +19,6 @@ public class MealMenuParser {
 
   public List<Menu> parse(Element tableElement) {
     List<Menu> mealItems = new ArrayList<>();
-    if (tableElement == null) {
-      throw new IllegalStateException("식단 데이터를 수집하지 못했습니다.");
-    }
-
     Elements rows = tableElement.select("tbody tr");
     String currentDay = null;
 
@@ -50,11 +46,14 @@ public class MealMenuParser {
   private Menu buildMenuItem(String rawDay, Element rawMealType, Element rawTitle,
       Element rawContent, Element rawExtra) {
     String mealType = formatter.formatMealType(rawMealType.text());
-    String title = rawTitle.text().trim();
+    String extractedTitle = formatter.extractTitleFromContent(rawContent.text());
+    String title =
+        !extractedTitle.isBlank() ? extractedTitle : formatter.formatMealTitle(rawTitle.text());
     String content = formatter.formatMenuContent(rawContent.text());
     String extra = rawExtra.text().trim();
     LocalDate date = formatter.formatDate(rawDay);
     Integer generatedId = formatter.formatMenuId(date, mealType);
+
     return Menu.of(generatedId, date, mealType, title, content, extra);
   }
 }

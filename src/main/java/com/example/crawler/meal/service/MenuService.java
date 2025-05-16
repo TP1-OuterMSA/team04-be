@@ -1,10 +1,12 @@
 package com.example.crawler.meal.service;
 
+import com.example.crawler.meal.component.KafkaNutritionEventListener;
 import com.example.crawler.meal.component.MenuKafkaProducer;
 import com.example.crawler.meal.component.MenuMapper;
-import com.example.crawler.meal.component.db.NewMenuAdder;
+import com.example.crawler.meal.component.db.MealMenuSaver;
 import com.example.crawler.meal.dto.MenuResponseDto;
 import com.example.crawler.meal.entity.Menu;
+import com.example.kafka_schemas.NutritionEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class MenuService {
 
   private final MenuKafkaProducer menuKafkaProducer;
-  private final MealMenuCrawlerService mealMenuCrawlerService;
-  private final NewMenuAdder newMenuAdder;
-  private final MenuMapper menuMapper;
 
+  private final MealMenuCrawlerService mealMenuCrawlerService;
+  private final MealMenuSaver mealMenuSaver;
+  private final MenuMapper menuMapper;
+  private final KafkaNutritionEventListener KafkaNutritionEventListener;
   public List<MenuResponseDto> getMenuItems() {
     List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler();
-    List<Menu> newMenus = newMenuAdder.addNewMenus(menuList);
+    List<Menu> newMenus = mealMenuSaver.saveMenus(menuList);
+
+    NutritionEvent event= new NutritionEvent();
+    KafkaNutritionEventListener.consume(event);
 
     if (!newMenus.isEmpty()) {
     //  menuKafkaProducer.sendAllMealItems(newMenus);

@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 public class NutriApiResponseApiClient {
 
   private static final String PRIMARY_API_URL = "http://api.data.go.kr/openapi/tn_pubr_public_nutri_food_info_api";
-  private static final String FALLBACK_API_URL = "https://api.data.go.kr/openapi/tn_pubr_public_nutri_process_info_api";
+  private static final String FALLBACK_API_URL = "http://api.data.go.kr/openapi/tn_pubr_public_nutri_process_info_api";
 
   @Value("${api.nutri.service-key}")
   private String serviceKey;
@@ -50,7 +50,7 @@ public class NutriApiResponseApiClient {
           "&pageNo=1" +
           "&numOfRows=10" +
           "&type=json" +
-          "&foodNm=" + encodedFoodName;
+          "&foodLv4Nm=" + encodedFoodName;
 
       log.info("Request URL: {}", fullUrl);
 
