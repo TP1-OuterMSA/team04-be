@@ -41,7 +41,7 @@ public class MealMenuSaver {
     }
 
     List<Menu> savedMenus = menuRepository.saveAll(newMenus);
-   // savedMenus.forEach(this::saveMealRelations);
+    savedMenus.forEach(this::saveMealRelations);
 
     return savedMenus;
   }
