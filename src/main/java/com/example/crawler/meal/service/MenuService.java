@@ -28,10 +28,8 @@ public class MenuService {
     List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler(onlyThisWeek);
     List<Menu> newMenus = mealMenuSaver.saveMenus(menuList);
 
-    if (!newMenus.isEmpty()) {
       // menuKafkaProducer.sendAllMealItems(newMenus);
-    }
-    return menuList.stream()
+      return menuList.stream()
         .map(menuMapper::toDto)
         .toList();
   }
