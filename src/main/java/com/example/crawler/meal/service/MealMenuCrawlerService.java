@@ -26,10 +26,9 @@ public class MealMenuCrawlerService {
   private final MealMenuUrlGenerator mealMenuUrlGenerator;
 
 
-  public List<Menu> mealMenuCrawler() {
+  public List<Menu> mealMenuCrawler(boolean onlyThisWeek) {
     List<Menu> totalMenuList = new ArrayList<>();
-
-    List<String> targetUrls = mealMenuUrlGenerator.generateUrls();
+    List<String> targetUrls = mealMenuUrlGenerator.generateUrls(onlyThisWeek);
 
     for (String url : targetUrls) {
       try {

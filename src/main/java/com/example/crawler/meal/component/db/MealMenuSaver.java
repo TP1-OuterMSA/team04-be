@@ -1,6 +1,5 @@
 package com.example.crawler.meal.component.db;
 
-import com.example.crawler.meal.component.KafkaNutritionEventListener;
 import com.example.crawler.meal.component.crawling.NutriApiResponseApiClient;
 import com.example.crawler.meal.dto.NutriApiResponseDto.Item;
 import com.example.crawler.meal.entity.Meal;
@@ -42,7 +41,7 @@ public class MealMenuSaver {
     }
 
     List<Menu> savedMenus = menuRepository.saveAll(newMenus);
-    savedMenus.forEach(this::saveMealRelations);
+   // savedMenus.forEach(this::saveMealRelations);
 
     return savedMenus;
   }

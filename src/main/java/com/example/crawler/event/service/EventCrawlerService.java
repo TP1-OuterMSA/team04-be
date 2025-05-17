@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class EventCrawlerService {
 
     private static final String BASE_URL = "https://www.mju.ac.kr/mjukr/255/subview.do";
-    private static final int MAX_PAGES = 10;
+    private static final int MAX_PAGES = 5;
 
     private final EventHtmlFetcher eventHtmlFetcher;
     private final EventExtractor eventExtractor;

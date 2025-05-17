@@ -33,7 +33,7 @@ public class EventService {
     List<Event> newEvents = eventSaver.saveEvents(events);
 
     if (!newEvents.isEmpty()) {
-  eventKafkaProducer.sendAllEventItems(newEvents);
+      eventKafkaProducer.sendAllEventItems(newEvents);
     }
 
     return events.stream()
