@@ -24,8 +24,8 @@ public class MenuService {
   private final MealMenuSaver mealMenuSaver;
   private final MenuMapper menuMapper;
 
-  public List<MenuResponseDto> getMenuItems(boolean onlyThisWeek) {
-    List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler(onlyThisWeek);
+  public List<MenuResponseDto> getMenuItems() {
+    List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler();
     List<Menu> newMenus = mealMenuSaver.saveMenus(menuList);
 
     if (!newMenus.isEmpty()) {
