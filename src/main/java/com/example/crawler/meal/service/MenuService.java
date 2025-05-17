@@ -29,7 +29,7 @@ public class MenuService {
     List<Menu> newMenus = mealMenuSaver.saveMenus(menuList);
 
     if (!newMenus.isEmpty()) {
-      // menuKafkaProducer.sendAllMealItems(newMenus);
+     menuKafkaProducer.sendAllMealItems(newMenus);
     }
     return menuList.stream()
         .map(menuMapper::toDto)
