@@ -27,10 +27,8 @@ public class MenuService {
     List<Menu> menuList = mealMenuCrawlerService.mealMenuCrawler();
     List<Menu> newMenus = mealMenuSaveService.saveDB(menuList);
 
-    if (!newMenus.isEmpty()) {
       // menuKafkaProducer.sendAllMealItems(newMenus);
-    }
-    return menuList.stream()
+      return menuList.stream()
         .map(menuMapper::toDto)
         .toList();
   }
