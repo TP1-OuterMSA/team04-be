@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Build & Deploy
+    name: Build on Host & Deploy
     runs-on: ubuntu-22.04
 
     steps:
@@ -40,9 +40,14 @@ jobs:
         run: |
           aws ecr get-login-password | docker login --username AWS --password-stdin ${{ env.ECR_REPO }}
 
-      - name: Build and Push Docker Image
+      - name: Build with Gradle on Host
         run: |
-          docker build -t team04-be .
+          chmod +x gradlew
+          ./gradlew clean build -x test
+
+      - name: Build and Push Docker Image with JAR only
+        run: |
+          docker build -t team04-be -f Dockerfile.hostbuild .
           docker tag team04-be:latest ${{ env.ECR_REPO }}:sha-${SHORT_SHA}
           docker push ${{ env.ECR_REPO }}:sha-${SHORT_SHA}
 
@@ -51,12 +56,10 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git clone https://${GH_PAT}@github.com/TP1-OuterMSA/msa-infra-main.git
-          cd msa-infra-main/charts/services/team04-be
+          cd msa-infra-main/${{ env.SERVICE_PATH }}
 
-          # SHA로 이미지 태그 변경
           sed -i "s/tag: \".*\"/tag: \"sha-${SHORT_SHA}\"/" values.yaml
 
-          # Git 설정 및 push
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
 
